@@ -1,7 +1,5 @@
 from flask import Flask, request, render_template
-import scipy
 import pandas as pd
-import numpy as np
 from sklearn.externals import joblib
 
 app = Flask(__name__)
