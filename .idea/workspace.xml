@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b4f95ec-29de-46ed-82b7-fe4e86ef36fe" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home.html" afterPath="$PROJECT_DIR$/templates/home.html" />
-    </list>
+    <list default="true" id="5b4f95ec-29de-46ed-82b7-fe4e86ef36fe" name="Default" comment="" />
     <ignored path="Capital-One-MSF17.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
