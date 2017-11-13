@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template
-import pickle
+import scipy
+import pandas as pd
 import numpy as np
+from sklearn.externals import joblib
 
 app = Flask(__name__)
 
@@ -10,42 +12,56 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/getdelay', methods=['POST', 'GET'])
-def get_delay():
+@app.route('/predict-income', methods=['POST', 'GET'])
+def predictIncome():
     if request.method == 'POST':
         result = request.form
+        lat = result['lat']
+        long = result['long']
+        try:
+            lat = int(lat)
+        except:
+            pass
+        try:
+            long = int(long)
+        except:
+            pass
+        try:
+            model = joblib.load('KNNeighborsRegressor.pkl')
+            data = [lat, long]
+            input_val = pd.DataFrame([data])
+            prediction = model.predict(input_val)[0][0]
+            prediction = round(prediction, 2)
+        except Exception as e:
+            print(e)
+            prediction = "Invalid Input!"
+        return render_template('income.html', prediction=prediction, lat=lat, long=long)
 
-        # Prepare the feature vector for prediction
-        pkl_file = open('cat', 'rb')
-        index_dict = pickle.load(pkl_file)
-        new_vector = np.zeros(len(index_dict))
 
+@app.route('/predict-price', methods=['POST', 'GET'])
+def predictPrice():
+    if request.method == 'POST':
+        result = request.form
+        lat = result['lat']
+        long = result['long']
         try:
-            new_vector[index_dict['DAY_OF_WEEK_' + str(result['day_of_week'])]] = 1
+            lat = int(lat)
         except:
             pass
         try:
-            new_vector[index_dict['UNIQUE_CARRIER_' + str(result['unique_carrier'])]] = 1
+            long = int(long)
         except:
             pass
         try:
-            new_vector[index_dict['ORIGIN_' + str(result['origin'])]] = 1
-        except:
-            pass
-        try:
-            new_vector[index_dict['DEST_' + str(result['dest'])]] = 1
-        except:
-            pass
-        try:
-            new_vector[index_dict['DEP_HOUR_' + str(result['dep_hour'])]] = 1
-        except:
-            pass
-
-        pkl_file = open('logmodel.pkl', 'rb')
-        logmodel = pickle.load(pkl_file)
-        prediction = logmodel.predict(new_vector)
-
-        return render_template('result.html', prediction=prediction)
+            model = joblib.load('KNNeighborsRegressor.pkl')
+            data = [lat, long]
+            input_val = pd.DataFrame([data])
+            prediction = model.predict(input_val)[0][0]
+            prediction = round(prediction, 2)
+        except Exception as e:
+            print(e)
+            prediction = "Invalid Input!"
+        return render_template('price.html', prediction=prediction, lat=lat, long=long)
 
 
 if __name__ == '__main__':
