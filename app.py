@@ -53,7 +53,7 @@ def predictPrice():
         except:
             pass
         try:
-            model = joblib.load('KNNeighborsRegressor.pkl')
+            model = joblib.load('PriceKNNeighborsRegressor.pkl')
             data = [lat, long]
             input_val = pd.DataFrame([data])
             prediction = model.predict(input_val)[0][0]
